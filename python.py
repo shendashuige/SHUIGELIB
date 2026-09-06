@@ -55,4 +55,32 @@ def is_prime(n):
 print(is_prime(17))
 print(is_prime(2))
 
+#7 100 以内素数
+def primes_within_100():
+    primes = []
+    for num in range(2, 101):
+        if is_prime(num):
+            primes.append(num)
+    return primes
+
+print(primes_within_100())
+
+#8 水仙花数
+def is_armstrong(num):
+    order = len(str(num))
+    sum = 0
+    temp = num
+    while temp > 0:
+        digit = temp % 10           # 获取个位数    
+        sum += digit ** order       # 将个位数的幂加到总和中
+        temp = temp // 10           # 将临时变量除以10，去掉个位数
+    return sum == num               # 判断总和是否等于原始数字   
+print(is_armstrong(153))    
+print(is_armstrong(123))    
     
+
+
+
+
+       
+

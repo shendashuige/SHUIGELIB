@@ -1,0 +1,1166 @@
+
+
+
+Python 100 道经典算法题（含答案）
+一、基础入门（1–20）
+两数之和
+python
+运行
+def twoSum(nums, target):
+    d = {}
+    for i, n in enumerate(nums):
+        if target - n in d:
+            return [d[target-n], i]
+        d[n] = i
+斐波那契数列
+python
+运行
+def fib(n):
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a+b
+    return a
+阶乘
+python
+运行
+def fact(n):
+    res = 1
+    for i in range(1, n+1):
+        res *= i
+    return res
+最大公约数 GCD
+python
+运行
+def gcd(a, b):
+    while b:
+        a, b = b, a%b
+    return a
+最小公倍数 LCM
+python
+运行
+def lcm(a,b):
+    return a*b//gcd(a,b)
+判断素数
+python
+运行
+def is_prime(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5)+1):
+        if n%i == 0:
+            return False
+    return True
+100 以内素数
+python
+运行
+print([i for i in range(2,101) if all(i%j for j in range(2,int(i**0.5)+1))])
+水仙花数
+python
+运行
+def narcissus(n):
+    s = str(n)
+    return sum(int(c)**3 for c in s) == n
+回文数
+python
+运行
+def is_palindrome(n):
+    s = str(n)
+    return s == s[::-1]
+字符串反转
+python
+运行
+def reverse(s):
+    return s[::-1]
+列表去重
+python
+运行
+def unique(lst):
+    return list(set(lst))
+冒泡排序
+python
+运行
+def bubble(lst):
+    for i in range(len(lst)):
+        for j in range(len(lst)-i-1):
+            if lst[j] > lst[j+1]:
+                lst[j], lst[j+1] = lst[j+1], lst[j]
+    return lst
+二分查找
+python
+运行
+def binary(lst, x):
+    l, r = 0, len(lst)-1
+    while l <= r:
+        m = (l+r)//2
+        if lst[m] == x:
+            return m
+        elif lst[m] < x:
+            l = m+1
+        else:
+            r = m-1
+    return -1
+统计字符次数
+python
+运行
+from collections import Counter
+def count(s):
+    return Counter(s)
+列表最大值
+python
+运行
+def max_lst(lst):
+    return max(lst)
+列表求和
+python
+运行
+def sum_lst(lst):
+    return sum(lst)
+九九乘法表
+python
+运行
+for i in range(1,10):
+    for j in range(1,i+1):
+        print(f"{j}×{i}={i*j}", end=" ")
+    print()
+打印菱形
+python
+运行
+n = 5
+for i in range(-n+1, n):
+    print(" "*(abs(i)) + "*"*(2*(n-abs(i))-1))
+猴子吃桃
+python
+运行
+def peach(n):
+    res = 1
+    for _ in range(n-1):
+        res = (res+1)*2
+    return res
+鸡兔同笼
+python
+运行
+def solve(heads, legs):
+    for r in range(heads+1):
+        c = heads - r
+        if 2*c +4*r == legs:
+            return c, r
+二、数组与字符串（21–40）
+搜索插入位置
+python
+运行
+def searchInsert(nums, t):
+    l, r = 0, len(nums)
+    while l < r:
+        m = (l+r)//2
+        if nums[m] < t:
+            l = m+1
+        else:
+            r = m
+    return l
+合并有序数组
+python
+运行
+def merge(a, m, b, n):
+    i, j, k = m-1, n-1, m+n-1
+    while j >=0:
+        if i>=0 and a[i]>b[j]:
+            a[k]=a[i]
+            i-=1
+        else:
+            a[k]=b[j]
+            j-=1
+        k-=1
+移除元素
+python
+运行
+def remove(nums, val):
+    k=0
+    for x in nums:
+        if x != val:
+            nums[k]=x
+            k+=1
+    return k
+删除重复项
+python
+运行
+def removeDup(nums):
+    k=1
+    for i in range(1, len(nums)):
+        if nums[i] != nums[k-1]:
+            nums[k]=nums[i]
+            k+=1
+    return k
+最长公共前缀
+python
+运行
+def longestPrefix(strs):
+    if not strs:
+        return ""
+    p = strs[0]
+    for s in strs[1:]:
+        while not s.startswith(p):
+            p = p[:-1]
+            if not p:
+                return ""
+    return p
+有效括号
+python
+运行
+def isValid(s):
+    d = {")":"(", "}":"{", "]":"["}
+    stack = []
+    for c in s:
+        if c in d:
+            if not stack or stack[-1] != d[c]:
+                return False
+            stack.pop()
+        else:
+            stack.append(c)
+    return not stack
+字符串转整数
+python
+运行
+def atoi(s):
+    s = s.strip()
+    if not s:
+        return 0
+    sign = -1 if s[0]=='-' else 1
+    if s[0] in '+-':
+        s = s[1:]
+    res = 0
+    for c in s:
+        if not c.isdigit():
+            break
+        res = res*10 + int(c)
+    return max(-2**31, min(sign*res, 2**31-1))
+strStr
+python
+运行
+def strStr(hay, needle):
+    return hay.find(needle)
+外观数列
+python
+运行
+def countSay(n):
+    s = "1"
+    for _ in range(n-1):
+        res = ""
+        i=0
+        while i < len(s):
+            cnt=1
+            while i+1<len(s) and s[i]==s[i+1]:
+                cnt +=1
+                i +=1
+            res += str(cnt)+s[i]
+            i +=1
+        s = res
+    return s
+最后一个单词长度
+python
+运行
+def lastWord(s):
+    return len(s.strip().split()[-1]) if s.strip() else 0
+加一
+python
+运行
+def plusOne(digits):
+    for i in range(len(digits)-1, -1, -1):
+        if digits[i] <9:
+            digits[i] +=1
+            return digits
+        digits[i]=0
+    return [1]+digits
+二进制求和
+python
+运行
+def addBinary(a,b):
+    return bin(int(a,2)+int(b,2))[2:]
+x 的平方根
+python
+运行
+def mySqrt(x):
+    l, r = 0, x
+    while l <= r:
+        m = (l+r)//2
+        if m*m <=x <(m+1)**2:
+            return m
+        elif m*m <x:
+            l = m+1
+        else:
+            r = m-1
+爬楼梯
+python
+运行
+def climb(n):
+    a,b=1,1
+    for _ in range(n):
+        a,b = b,a+b
+    return a
+买卖股票最佳时机
+python
+运行
+def maxProfit(prices):
+    min_p = float('inf')
+    res = 0
+    for p in prices:
+        min_p = min(min_p, p)
+        res = max(res, p-min_p)
+    return res
+验证回文串
+python
+运行
+def isPal(s):
+    t = [c.lower() for c in s if c.isalnum()]
+    return t == t[::-1]
+只出现一次的数字
+python
+运行
+def single(nums):
+    res=0
+    for x in nums:
+        res ^=x
+    return res
+多数元素
+python
+运行
+def majority(nums):
+    cnt, res =0,0
+    for x in nums:
+        if cnt ==0:
+            res=x
+        cnt +=1 if x==res else -1
+    return res
+Excel 列名称
+python
+运行
+def convertToTitle(n):
+    res=""
+    while n>0:
+        n -=1
+        res = chr(ord('A')+n%26
+继续列出其他
+接上续（40‑100 题完整代码）
+40. Excel 列序号
+python
+运行
+def titleToNumber(s):
+    num = 0
+    for c in s:
+        num = num * 26 + (ord(c) - ord('A') + 1)
+    return num
+41. 颠倒二进制位
+python
+运行
+def reverseBits(n):
+    res = 0
+    for i in range(32):
+        res = (res << 1) | (n & 1)
+        n >>= 1
+    return res
+42. 位 1 的个数
+python
+运行
+def hammingWeight(n):
+    cnt = 0
+    while n:
+        n &= n - 1
+        cnt += 1
+    return cnt
+43. 快乐数
+python
+运行
+def isHappy(n):
+    def get_sum(x):
+        s = 0
+        while x:
+            s += (x % 10) ** 2
+            x //= 10
+        return s
+    slow, fast = n, get_sum(n)
+    while slow != fast:
+        slow = get_sum(slow)
+        fast = get_sum(get_sum(fast))
+    return slow == 1
+44. 反转链表
+python
+运行
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+def reverseList(head):
+    prev = None
+    cur = head
+    while cur:
+        nxt = cur.next
+        cur.next = prev
+        prev = cur
+        cur = nxt
+    return prev
+45. 移除链表元素
+python
+运行
+def removeElements(head, val):
+    dummy = ListNode(0, head)
+    cur = dummy
+    while cur.next:
+        if cur.next.val == val:
+            cur.next = cur.next.next
+        else:
+            cur = cur.next
+    return dummy.next
+46. 奇偶链表
+python
+运行
+def oddEvenList(head):
+    if not head:
+        return None
+    odd, even, evenHead = head, head.next, head.next
+    while even and even.next:
+        odd.next = even.next
+        odd = odd.next
+        even.next = odd.next
+        even = even.next
+    odd.next = evenHead
+    return head
+47. 回文链表
+python
+运行
+def isPalindromeList(head):
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    prev = None
+    while slow:
+        nxt = slow.next
+        slow.next = prev
+        prev = slow
+        slow = nxt
+    left, right = head, prev
+    while right:
+        if left.val != right.val:
+            return False
+        left = left.next
+        right = right.next
+    return True
+48. 相交链表
+python
+运行
+def getIntersectionNode(headA, headB):
+    a, b = headA, headB
+    while a != b:
+        a = a.next if a else headB
+        b = b.next if b else headA
+    return a
+49. 环形链表判断
+python
+运行
+def hasCycle(head):
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+    return False
+50. 二叉树前序遍历（递归）
+python
+运行
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+def preorder(root, res=None):
+    if res is None:
+        res = []
+    if root:
+        res.append(root.val)
+        preorder(root.left, res)
+        preorder(root.right, res)
+    return res
+51. 二叉树中序遍历
+python
+运行
+def inorder(root, res=None):
+    if res is None:
+        res = []
+    if root:
+        inorder(root.left, res)
+        res.append(root.val)
+        inorder(root.right, res)
+    return res
+52. 二叉树后序遍历
+python
+运行
+def postorder(root, res=None):
+    if res is None:
+        res = []
+    if root:
+        postorder(root.left, res)
+        postorder(root.right, res)
+        res.append(root.val)
+    return res
+53. 二叉树层序遍历 (BFS)
+python
+运行
+from collections import deque
+def levelOrder(root):
+    ans = []
+    if not root:
+        return ans
+    q = deque([root])
+    while q:
+        size = len(q)
+        row = []
+        for _ in range(size):
+            node = q.popleft()
+            row.append(node.val)
+            if node.left: q.append(node.left)
+            if node.right: q.append(node.right)
+        ans.append(row)
+    return ans
+54. 二叉树最大深度
+python
+运行
+def maxDepth(root):
+    if not root:
+        return 0
+    return 1 + max(maxDepth(root.left), maxDepth(root.right))
+55. 对称二叉树
+python
+运行
+def isSymmetric(root):
+    def check(l,r):
+        if not l and not r: return True
+        if not l or not r: return False
+        return l.val == r.val and check(l.left,r.right) and check(l.right,r.left)
+    return check(root.left, root.right)
+56. 相同二叉树
+python
+运行
+def isSameTree(p,q):
+    if not p and not q: return True
+    if not p or not q: return False
+    return p.val == q.val and isSameTree(p.left,q.left) and isSameTree(p.right,q.right)
+57. 二叉树的镜像（翻转二叉树）
+python
+运行
+def invertTree(root):
+    if not root:
+        return None
+    root.left, root.right = invertTree(root.right), invertTree(root.left)
+    return root
+58. 平衡二叉树
+python
+运行
+def isBalanced(root):
+    def dfs(node):
+        if not node:
+            return 0
+        l = dfs(node.left)
+        r = dfs(node.right)
+        if l == -1 or r == -1 or abs(l-r)>1:
+            return -1
+        return max(l,r)+1
+    return dfs(root) != -1
+59. 二叉树的最小深度
+python
+运行
+def minDepth(root):
+    if not root:
+        return 0
+    if not root.left:
+        return 1 + minDepth(root.right)
+    if not root.right:
+        return 1 + minDepth(root.left)
+    return 1 + min(minDepth(root.left), minDepth(root.right))
+60. 路径总和
+python
+运行
+def hasPathSum(root, targetSum):
+    if not root:
+        return False
+    if not root.left and not root.right:
+        return root.val == targetSum
+    return hasPathSum(root.left, targetSum - root.val) or hasPathSum(root.right, targetSum - root.val)
+61. 杨辉三角
+python
+运行
+def generate(numRows):
+    res = []
+    for i in range(numRows):
+        row = [1]*(i+1)
+        for j in range(1,i):
+            row[j] = res[i-1][j-1] + res[i-1][j]
+        res.append(row)
+    return res
+62. 杨辉三角第 n 行
+python
+运行
+def getRow(rowIndex):
+    row = [1]
+    for i in range(rowIndex):
+        row = [a+b for a,b in zip([0]+row, row+[0])]
+    return row
+63. 缺失数字
+python
+运行
+def missingNumber(nums):
+    n = len(nums)
+    return n*(n+1)//2 - sum(nums)
+64. 移动零
+python
+运行
+def moveZeroes(nums):
+    slow = 0
+    for fast in range(len(nums)):
+        if nums[fast] != 0:
+            nums[slow], nums[fast] = nums[fast], nums[slow]
+            slow += 1
+65. 第三大的数
+python
+运行
+def thirdMax(nums):
+    s = sorted(set(nums), reverse=True)
+    return s[2] if len(s)>=3 else s[0]
+66. 连续出现的数字（数组最长连续递增）
+python
+运行
+def findLengthOfLCIS(nums):
+    res, cnt = 1, 1
+    for i in range(1,len(nums)):
+        if nums[i]>nums[i-1]:
+            cnt +=1
+            res = max(res,cnt)
+        else:
+            cnt = 1
+    return res
+67. 反转字符串单词
+python
+运行
+def reverseWords(s):
+    return " ".join(s.strip().split()[::-1])
+68. 字符串压缩
+python
+运行
+def compress(s):
+    res,i = "",0
+    while i < len(s):
+        j = i
+        while j < len(s) and s[j]==s[i]:
+            j +=1
+        res += s[i] + str(j-i)
+        i = j
+    return res
+69. 最长连续序列（哈希）
+python
+运行
+def longestConsecutive(nums):
+    st = set(nums)
+    best = 0
+    for x in st:
+        if x-1 not in st:
+            cur,length = x,1
+            while cur+1 in st:
+                cur +=1
+                length +=1
+            best = max(best,length)
+    return best
+70. 子集（回溯）
+python
+运行
+def subsets(nums):
+    ans = []
+    def dfs(idx,path):
+        ans.append(path[:])
+        for i in range(idx,len(nums)):
+            path.append(nums[i])
+            dfs(i+1,path)
+            path.pop()
+    dfs(0,[])
+    return ans
+71. 子集 II（含重复元素去重）
+python
+运行
+def subsetsWithDup(nums):
+    nums.sort()
+    ans = []
+    def dfs(idx,path):
+        ans.append(path[:])
+        for i in range(idx,len(nums)):
+            if i>idx and nums[i]==nums[i-1]:
+                continue
+            path.append(nums[i])
+            dfs(i+1,path)
+            path.pop()
+    dfs(0,[])
+    return ans
+72. 组合
+python
+运行
+def combine(n,k):
+    ans=[]
+    def dfs(start,path):
+        if len(path)==k:
+            ans.append(path[:])
+            return
+        for i in range(start,n+1):
+            path.append(i)
+            dfs(i+1,path)
+            path.pop()
+    dfs(1,[])
+    return ans
+73. 组合总和
+python
+运行
+def combinationSum(candidates,target):
+    ans=[]
+    def dfs(start,path,total):
+        if total == target:
+            ans.append(path[:])
+            return
+        if total>target:
+            return
+        for i in range(start,len(candidates)):
+            path.append(candidates[i])
+            dfs(i,path,total+candidates[i])
+            path.pop()
+    dfs(0,[],0)
+    return ans
+74. 组合总和 II
+python
+运行
+def combinationSum2(candidates,target):
+    candidates.sort()
+    ans=[]
+    def dfs(start,path,total):
+        if total == target:
+            ans.append(path[:])
+            return
+        if total>target:
+            return
+        for i in range(start,len(candidates)):
+            if i>start and candidates[i]==candidates[i-1]:
+                continue
+            path.append(candidates[i])
+            dfs(i+1,path,total+candidates[i])
+            path.pop()
+    dfs(0,[],0)
+    return ans
+75. 全排列
+python
+运行
+def permute(nums):
+    ans=[]
+    def dfs(path,used):
+        if len(path)==len(nums):
+            ans.append(path[:])
+            return
+        for i in range(len(nums)):
+            if not used[i]:
+                used[i]=True
+                path.append(nums[i])
+                dfs(path,used)
+                path.pop()
+                used[i]=False
+    dfs([],[False]*len(nums))
+    return ans
+76. 全排列 II（含重复）
+python
+运行
+def permuteUnique(nums):
+    nums.sort()
+    ans=[]
+    def dfs(path,used):
+        if len(path)==len(nums):
+            ans.append(path[:])
+            return
+        for i in range(len(nums)):
+            if used[i]: continue
+            if i>0 and nums[i]==nums[i-1] and not used[i-1]:
+                continue
+            used[i]=True
+            path.append(nums[i])
+            dfs(path,used)
+            path.pop()
+            used[i]=False
+    dfs([],[False]*len(nums))
+    return ans
+77. 括号生成
+python
+运行
+def generateParenthesis(n):
+    res=[]
+    def dfs(l,r,s):
+        if l==n and r==n:
+            res.append(s)
+            return
+        if l<n:
+            dfs(l+1,r,s+"(")
+        if r<l:
+            dfs(l,r+1,s+")")
+    dfs(0,0,"")
+    return res
+78. 岛屿数量（DFS）
+python
+运行
+def numIslands(grid):
+    m = len(grid)
+    if m==0: return 0
+    n = len(grid[0])
+    cnt = 0
+    def dfs(i,j):
+        if i<0 or i>=m or j<0 or j>=n or grid[i][j]=="0":
+            return
+        grid[i][j]="0"
+        dfs(i+1,j)
+        dfs(i-1,j)
+        dfs(i,j+1)
+        dfs(i,j-1)
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j]=="1":
+                cnt +=1
+                dfs(i,j)
+    return cnt
+79. 打家劫舍（一维 DP）
+python
+运行
+def rob(nums):
+    if not nums: return 0
+    if len(nums)==1: return nums[0]
+    dp=[0]*len(nums)
+    dp[0]=nums[0]
+    dp[1]=max(nums[0],nums[1])
+    for i in range(2,len(nums)):
+        dp[i]=max(dp[i-1], dp[i-2]+nums[i])
+    return dp[-1]
+80. 最大子数组和（Kadane）
+python
+运行
+def maxSubArray(nums):
+    cur = best = nums[0]
+    for x in nums[1:]:
+        cur = max(x, cur+x)
+        best = max(best,cur)
+    return best
+81. 最长递增子序列 LIS (O (n²))
+python
+运行
+def lengthOfLIS(nums):
+    n=len(nums)
+    dp=[1]*n
+    for i in range(n):
+        for j in range(i):
+            if nums[i]>nums[j]:
+                dp[i]=max(dp[i],dp[j]+1)
+    return max(dp)
+82. 零钱兑换
+python
+运行
+def coinChange(coins,amount):
+    INF = float('inf')
+    dp=[INF]*(amount+1)
+    dp[0]=0
+    for i in range(1,amount+1):
+        for c in coins:
+            if c<=i:
+                dp[i]=min(dp[i], dp[i-c]+1)
+    return dp[amount] if dp[amount]!=INF else -1
+83. 三角形最小路径和
+python
+运行
+def minimumTotal(triangle):
+    for i in range(len(triangle)-2,-1,-1):
+        for j in range(len(triangle[i])):
+            triangle[i][j] += min(triangle[i+1][j],triangle[i+1][j+1])
+    return triangle[0][0]
+84. 不同路径
+python
+运行
+def uniquePaths(m,n):
+    dp=[[1]*n for _ in range(m)]
+    for i in range(1,m):
+        for j in range(1,n):
+            dp[i][j]=dp[i-1][j]+dp[i][j-1]
+    return dp[-1][-1]
+85. 不同路径 II（障碍物）
+python
+运行
+def uniquePathsWithObstacles(grid):
+    m,n = len(grid),len(grid[0])
+    if grid[0][0]==1: return 0
+    dp=[[0]*n for _ in range(m)]
+    dp[0][0]=1
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j]==1:
+                dp[i][j]=0
+                continue
+            if i>0: dp[i][j] += dp[i-1][j]
+            if j>0: dp[i][j] += dp[i][j-1]
+    return dp[-1][-1]
+86. 最小路径和
+python
+运行
+def minPathSum(grid):
+    m,n = len(grid),len(grid[0])
+    for i in range(m):
+        for j in range(n):
+            if i==0 and j==0: continue
+            top = grid[i-1][j] if i>0 else float('inf')
+            left = grid[i][j-1] if j>0 else float('inf')
+            grid[i][j] += min(top,left)
+    return grid[-1][-1]
+87. 买卖股票 II（可多次交易）
+python
+运行
+def maxProfit2(prices):
+    profit = 0
+    for i in range(1,len(prices)):
+        if prices[i]>prices[i-1]:
+            profit += prices[i]-prices[i-1]
+    return profit
+88. 排序：选择排序
+python
+运行
+def selectSort(arr):
+    n=len(arr)
+    for i in range(n):
+        min_idx=i
+        for j in range(i+1,n):
+            if arr[j]<arr[min_idx]:
+                min_idx=j
+        arr[i],arr[min_idx]=arr[min_idx],arr[i]
+    return arr
+89. 插入排序
+python
+运行
+def insertSort(arr):
+    for i in range(1,len(arr)):
+        tmp=arr[i]
+        j=i-1
+        while j>=0 and arr[j]>tmp:
+            arr[j+1]=arr[j]
+            j -=1
+        arr[j+1]=tmp
+    return arr
+90. 快速排序
+python
+运行
+def quickSort(arr):
+    if len(arr)<=1:
+        return arr
+    pivot = arr[len(arr)//2]
+    left = [x for x in arr if x < pivot]
+    mid = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quickSort(left)+mid+quickSort(right)
+91. 归并排序
+python
+运行
+def mergeSort(arr):
+    if len(arr)<=1:
+        return arr
+    mid = len(arr)//2
+    L = mergeSort(arr[:mid])
+    R = mergeSort(arr[mid:])
+    i=j=0
+    res=[]
+    while i<len(L) and j<len(R):
+        if L[i]<R[j]:
+            res.append(L[i])
+            i+=1
+        else:
+            res.append(R[j])
+            j+=1
+    res.extend(L[i:])
+    res.extend(R[j:])
+    return res
+92. 堆排序
+python
+运行
+def heapSort(arr):
+    def heapify(a,n,i):
+        largest=i
+        l=2*i+1
+        r=2*i+2
+        if l<n and a[l]>a[largest]: largest=l
+        if r<n and a[r]>a[largest]: largest=r
+        if largest!=i:
+            a[i],a[largest]=a[largest],a[i]
+            heapify(a,n,largest)
+    n=len(arr)
+    for i in range(n//2-1,-1,-1):
+        heapify(arr,n,i)
+    for i in range(n-1,0,-1):
+        arr[0],arr[i]=arr[i],arr[0]
+        heapify(arr,i,0)
+    return arr
+93. 电话号码字母组合（回溯）
+python
+运行
+def letterCombinations(digits):
+    if not digits: return []
+    mp={"2":"abc","3":"def","4":"ghi","5":"jkl","6":"mno","7":"pqrs","8":"tuv","9":"wxyz"}
+    res=[]
+    def dfs(pos,path):
+        if pos==len(digits):
+            res.append(path)
+            return
+        for c in mp[digits[pos]]:
+            dfs(pos+1,path+c)
+    dfs(0,"")
+    return res
+94. 跳跃游戏
+python
+运行
+def canJump(nums):
+    far = 0
+    for i in range(len(nums)):
+        if i>far:
+            return False
+        far = max(far,i+nums[i])
+    return True
+95. 跳跃游戏 II
+python
+运行
+def jump(nums):
+    end,far,step = 0,0,0
+    for i in range(len(nums)-1):
+        far = max(far,i+nums[i])
+        if i == end:
+            step +=1
+            end = far
+    return step
+96. 盛最多水的容器（双指针）
+python
+运行
+def maxArea(height):
+    l,r,ans = 0,len(height)-1,0
+    while l<r:
+        area = min(height[l],height[r])*(r-l)
+        ans = max(ans,area)
+        if height[l]<height[r]:
+            l +=1
+        else:
+            r -=1
+    return ans
+97. 三数之和
+python
+运行
+def threeSum(nums):
+    nums.sort()
+    res=[]
+    n=len(nums)
+    for i in range(n):
+        if i>0 and nums[i]==nums[i-1]: continue
+        l,r = i+1,n-1
+        while l<r:
+            s = nums[i]+nums[l]+nums[r]
+            if s == 0:
+                res.append([nums[i],nums[l],nums[r]])
+                while l<r and nums[l]==nums[l+1]: l+=1
+                while l<r and nums[r]==nums[r-1]: r-=1
+                l +=1
+                r -=1
+            elif s<0:
+                l +=1
+            else:
+                r -=1
+    return res
+98. 四数之和
+python
+运行
+def fourSum(nums,target):
+    nums.sort()
+    res=[]
+    n=len(nums)
+    for i in range(n):
+        if i>0 and nums[i]==nums[i-1]: continue
+        for j in range(i+1,n):
+            if j>i+1 and nums[j]==nums[j-1]: continue
+            l,r = j+1,n-1
+            while l<r:
+                s = nums[i]+nums[j]+nums[l]+nums[r]
+                if s == target:
+                    res.append([nums[i],nums[j],nums[l],nums[r]])
+                    while l<r and nums[l]==nums[l+1]: l+=1
+                    while l<r and nums[r]==nums[r-1]: r-=1
+                    l +=1
+                    r -=1
+                elif s<target:
+                    l +=1
+                else:
+                    r -=1
+    return res
+99. 最长回文子串（中心扩展）
+python
+运行
+def longestPalindrome(s):
+    def expand(l,r):
+        while l>=0 and r<len(s) and s[l]==s[r]:
+            l -=1
+            r +=1
+        return s[l+1:r]
+    best=""
+    for i in range(len(s)):
+        a = expand(i,i)
+        b = expand(i,i+1)
+        best = max(best,a,b,key=len)
+    return best
+100. LRU 缓存（哈希 + 双向链表）
+python
+运行
+class Node:
+    def __init__(self,k,v):
+        self.key=k
+        self.val=v
+        self.prev=None
+        self.next=None
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.cap = capacity
+        self.d = {}
+        self.head = Node(0,0)
+        self.tail = Node(0,0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+    def _remove(self,node):
+        p,n = node.prev,node.next
+        p.next = n
+        n.prev = p
+    def _add(self,node):
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+    def _moveToHead(self,node):
+        self._remove(node)
+        self._add(node)
+    def get(self, key: int) -> int:
+        if key not in self.d:
+            return -1
+        node = self.d[key]
+        self._moveToHead(node)
+        return node.val
+    def put(self, key: int, value: int) -> None:
+        if key in self.d:
+            node = self.d[key]
+            node.val = value
+            self._moveToHead(node)
+        else:
+            newNode = Node(key,value)
+            self.d[key] = newNode
+            self._add(newNode)
+            if len(self.d) > self.cap:
+                delNode = self.tail.prev
+                self._remove(delNode)
+                del self.d[delNode.key]
+
+
+
+
+
