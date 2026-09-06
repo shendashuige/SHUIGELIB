@@ -147,7 +147,9 @@ for name in names:
     print("Hello, " + name + "! How are you today?")    
     print("I hope you are doing well, " + name + "!")   
 # 3-3 自定义列表：想出你喜欢的通勤方式，并将其存储在一个列表中，再使用该列表打印一条消息，说明你喜欢的通勤方式。
+# 根据该列表打印一系列有关这些通勤方式的宣言，如“I would like to own a Honda motorcycle”。
 commute_methods = ["bicycle", "bus", "train", "car"]
 print("我喜欢的通勤方式有：")
 for method in commute_methods:
-    print(method)
+    print(f"I would like to own a {method}.")
+print(f"I would like to own a {commute_methods[-1]}.")
